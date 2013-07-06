@@ -9,9 +9,12 @@ platform = "blueOS"
 
 # later when starting the main program:
 if platform == "blueOS":
-	widgetFactory = AbstractWidgetFactory(BlueWidgetFactory())
+	factory = BlueWidgetFactory()
 else:
-	widgetFactory = AbstractWidgetFactory(GreenWidgetFactory())
+	factory = GreenWidgetFactory()
+	
+widgetFactory = AbstractWidgetFactory(factory)
+
 
 # In the heart of our program, we want to make and interact with some widgets:
 
