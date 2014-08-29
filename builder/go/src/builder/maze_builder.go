@@ -22,24 +22,8 @@ type StandardMazeBuilder struct {
 
 func NewStandardMazeBuilder() *StandardMazeBuilder {
 	return &StandardMazeBuilder{
-		new(BaseMazeBuilder),
-		_currentMaze: nil,
-	}
-}
-
-func (smb *StandardMazeBuilder) BuildMaze() {
-	smb._currentMaze = new(Maze)
-}
-
-func (smb *StandardMazeBuilder) BuildRoom(id int) {
-	if !smb._currentMaze.RoomNo(id) {
-		room := NewRoom(n)
-		_currentMaze.AddRoom(room)
-
-		room.SetSide(North, new(Wall))
-		room.SetSide(South, new(Wall))
-		room.SetSide(East, new(Wall))
-		room.SetSide(West, new(Wall))
+		BaseMazeBuilder: new(BaseMazeBuilder),
+		_currentMaze:    nil,
 	}
 }
 
@@ -48,8 +32,24 @@ func (smb *StandardMazeBuilder) BuildDoor(idFrom, idTo int) {
 	roomTo := smb._currentMaze.GetRoom(idTo)
 	door := NewDoor(roomFrom, roomTo)
 
-	roomFrom.SetSide(CommonWall(roomFrom, roomTo), door)
-	roomTo.SetSide(CommonWall(roomTo, roomFrom), door)
+	roomFrom.SetSide(roomFrom.CommonWall(roomTo), door)
+	roomTo.SetSide(roomTo.CommonWall(roomFrom), door)
+}
+
+func (smb *StandardMazeBuilder) BuildMaze() {
+	smb._currentMaze = new(Maze)
+}
+
+func (smb *StandardMazeBuilder) BuildRoom(id int) {
+	if smb._currentMaze.RoomNo(id) == nil {
+		room := NewRoom(id)
+		smb._currentMaze.AddRoom(room)
+
+		room.SetSide(North, new(Wall))
+		room.SetSide(South, new(Wall))
+		room.SetSide(East, new(Wall))
+		room.SetSide(West, new(Wall))
+	}
 }
 
 func (smb *StandardMazeBuilder) GetMaze() *Maze {

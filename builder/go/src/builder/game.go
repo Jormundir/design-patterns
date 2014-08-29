@@ -1,13 +1,16 @@
 package builder
 
-type MazeGame struct{}
+type MazeGame struct {
+	maze *Maze
+}
 
 func NewMazeGame() *MazeGame {
 	builder := new(StandardMazeBuilder)
 	mazeGame := new(MazeGame)
 
 	mazeGame.CreateMaze(builder)
-	maze := builder.GetMaze()
+	mazeGame.maze = builder.GetMaze()
+	return mazeGame
 }
 
 func (mg *MazeGame) CreateMaze(builder MazeBuilder) *Maze {
